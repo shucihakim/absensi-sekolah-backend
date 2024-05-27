@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('murid', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_kelas');
+            $table->string('nis');
+            $table->string('nama');
+            $table->string('email');
+            $table->string('no_hp');
+            $table->string('password');
+            $table->string('gambar')->nullable();
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

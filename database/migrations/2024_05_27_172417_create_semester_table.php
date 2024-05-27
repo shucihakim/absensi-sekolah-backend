@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('semester', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
+            $table->string('deskripsi')->nullable();
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

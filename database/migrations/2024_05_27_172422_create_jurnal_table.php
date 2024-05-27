@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('jurnal', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_semester');
+            $table->integer('id_kelas');
+            $table->integer('id_mapel');
+            $table->enum('keterangan', ['S', 'I', 'A']);
+            $table->time('jam_masuk');
+            $table->time('jam_keluar');
+            $table->string('materi');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

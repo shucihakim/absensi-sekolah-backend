@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_murid');
+            $table->integer('id_jurnal');
+            $table->string('foto');
+            $table->timestamp('waktu');
             $table->timestamps();
         });
     }

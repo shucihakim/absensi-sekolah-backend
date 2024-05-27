@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('sekolah', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
+            $table->text('deskripsi')->nullable();
+            $table->string('logo')->nullable();
+            $table->decimal('garis_lintang', 10, 7)->nullable();
+            $table->decimal('garis_bujur', 10, 7)->nullable();
+            $table->string('penanda')->nullable();
+            $table->integer('jarak')->nullable();
             $table->timestamps();
         });
     }

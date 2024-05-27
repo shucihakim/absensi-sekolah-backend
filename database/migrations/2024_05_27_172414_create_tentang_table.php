@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('tentang', function (Blueprint $table) {
             $table->id();
+            $table->string('type');
+            $table->text('teks');
+            $table->string('lampiran')->nullable();
             $table->timestamps();
         });
     }

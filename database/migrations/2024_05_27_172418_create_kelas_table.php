@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('kelas', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_wali');
+            $table->integer('id_semester');
+            $table->string('nama');
+            $table->text('deskripsi')->nullable();
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }
