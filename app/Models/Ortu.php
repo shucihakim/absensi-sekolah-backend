@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Ortu extends Model
+class Ortu extends User
 {
-    use HasFactory;
+    use HasFactory, Notifiable, HasApiTokens;
     
     protected $table = 'ortu';
     protected $guarded = [];

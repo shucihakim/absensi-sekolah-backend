@@ -40,6 +40,26 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin_users',
+        ],
+        
+        'guru' => [
+            'driver' => 'session',
+            'provider' => 'guru_users',
+        ],
+        
+        'murid' => [
+            'driver' => 'session',
+            'provider' => 'murid_users',
+        ],
+        
+        'ortu' => [
+            'driver' => 'session',
+            'provider' => 'ortu_users',
+        ],
     ],
 
     /*
@@ -63,6 +83,26 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+        
+        'admin_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+        
+        'guru_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Guru::class,
+        ],
+
+        'murid_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Murid::class,
+        ],
+
+        'ortu_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Ortu::class,
         ],
 
         // 'users' => [
