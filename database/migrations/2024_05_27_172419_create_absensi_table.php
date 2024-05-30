@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -15,8 +16,10 @@ return new class extends Migration
             $table->id();
             $table->integer('id_murid');
             $table->integer('id_jurnal');
+            $table->integer('id_kelas');
+            $table->enum('keterangan', ['H', 'S', 'I', 'A'])->default('H');
             $table->string('foto');
-            $table->timestamp('waktu');
+            $table->timestamp('waktu')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
         });
     }

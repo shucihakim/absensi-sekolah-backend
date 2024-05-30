@@ -12,7 +12,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'auth.all' => \App\Http\Middleware\AuthAll::class,
+            'auth.admin' => \App\Http\Middleware\AuthAdmin::class,
+            'auth.guru' => \App\Http\Middleware\AuthGuru::class,
+            'auth.murid' => \App\Http\Middleware\AuthMurid::class,
+            'auth.ortu' => \App\Http\Middleware\AuthOrtu::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

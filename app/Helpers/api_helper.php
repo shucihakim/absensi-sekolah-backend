@@ -32,3 +32,17 @@ function api_error(Exception $e, ?int $status = 500)
     ];
     return response()->json($response, $status);
 }
+
+function upload_file($file, $folder)
+{
+    try {
+        if ($file) {
+            $file_name = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/' . $folder), $file_name);
+            return $file_name;
+        }
+        return null;
+    } catch (Exception $e) {
+        return api_error($e);
+    }
+}

@@ -36,6 +36,7 @@ class AuthController extends Controller
                 'no_hp.unique' => 'No HP sudah terdaftar',
                 'password.required' => 'Password masih kosong',
                 'password.min' => 'Password minimal 8 karakter',
+                'password.confirmed' => 'Konfirmasi password tidak sama.',
             ];
 
             if ($request->type == 'admin') {
@@ -54,9 +55,7 @@ class AuthController extends Controller
 
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return response()->json([
-                    'message' => $validator->errors()->first()
-                ], 400);
+                return api_failed($validator->errors()->first());
             }
 
             switch ($request->type) {
@@ -104,13 +103,7 @@ class AuthController extends Controller
                     break;
             }
 
-            $token = $user->createToken('auth_token')->plainTextToken;
-
-            return api_success('Register success', [
-                'data' => $user,
-                'access_token' => $token,
-                'token_type' => 'Bearer'
-            ]);
+            return api_success('Berhasil register, silahkan login untuk masuk ke aplikasi.', $user);
         } catch (Exception $e) {
             return api_error($e);
         }
@@ -119,6 +112,21 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try {
+            $rules = [
+                'account' => 'required',
+                'password' => 'required'
+            ];
+
+            $messages = [
+                'account.required' => 'Mohon isi identitas akun anda',
+                'password.required' => 'Password masih kosong',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return api_failed($validator->errors()->first());
+            }
+
             $account = $request->input('account');
 
             $admin = Admin::where('nip', $account)
@@ -185,9 +193,11 @@ class AuthController extends Controller
             if (empty($attempt)) {
                 return api_failed('Kata sandi yang anda masukan salah!');
             } else {
-                $token = $user->createToken('auth_token')->plainTextToken;
+                $payload = $user->toArray();
+                $payload['type'] = $type;
+                $token = generateJWT($payload);
                 return api_success('Login berhasil', [
-                    'type' => $type,
+                    'data' => $payload,
                     'access_token' => $token,
                     'token_type' => 'Bearer'
                 ]);

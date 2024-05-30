@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('garis_bujur', 10, 7)->nullable();
             $table->string('penanda')->nullable();
             $table->integer('jarak')->nullable();
+            $table->integer('id_semester_aktif')->nullable();
             $table->timestamps();
         });
     }
