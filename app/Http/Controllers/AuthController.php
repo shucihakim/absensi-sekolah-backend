@@ -22,7 +22,7 @@ class AuthController extends Controller
             $rules = [
                 'type' => 'required|in:admin,guru,murid,ortu',
                 'nama' => 'required|max:255',
-                'email' => 'required|max:255|unique:admin|unique:guru|unique:murid|unique:ortu',
+                'email' => 'required|email|max:255|unique:admin|unique:guru|unique:murid|unique:ortu',
                 'no_hp' => 'required|max:255|unique:admin|unique:guru|unique:murid|unique:ortu',
                 'password' => 'required|confirmed|min:8'
             ];
@@ -32,6 +32,7 @@ class AuthController extends Controller
                 'nama.required' => 'Nama masih kosong',
                 'email.required' => 'Email masih kosong',
                 'email.unique' => 'Email sudah terdaftar',
+                'email.email' => 'Alamat email tidak valid',
                 'no_hp.required' => 'No HP masih kosong',
                 'no_hp.unique' => 'No HP sudah terdaftar',
                 'password.required' => 'Password masih kosong',
