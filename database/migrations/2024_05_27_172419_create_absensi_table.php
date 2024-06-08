@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('keterangan', ['H', 'S', 'I', 'A'])->default('H');
             $table->string('foto');
             $table->timestamp('waktu')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('alamat')->nullable();
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Mapel;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class MapelController extends Controller
@@ -12,7 +13,15 @@ class MapelController extends Controller
     public function list()
     {
         try {
-            $mapel = Mapel::orderBy('id', 'DESC')->get();
+            $mapel = Mapel::leftJoin('jurnal', 'mapel.id', '=', 'jurnal.id_mapel')
+            ->groupBy('mapel.id')
+            ->orderBy('mapel.id', 'DESC')
+            ->get([
+                'mapel.id',
+                'mapel.nama as name',
+                'mapel.active as status',
+                DB::raw('COUNT(jurnal.id) as totalJurnal'),
+            ]);
             return api_success('Berhasil mengambil data mapel', $mapel);
         } catch (Exception $e) {
             return api_error($e);

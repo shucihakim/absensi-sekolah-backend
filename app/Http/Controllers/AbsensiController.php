@@ -12,7 +12,20 @@ class AbsensiController extends Controller
     public function list()
     {
         try {
-            $absensi = Absensi::orderBy('id', 'DESC')->get();
+            $absensi = Absensi::orderBy('id', 'DESC')
+                ->leftJoin('murid', 'absensi.id_murid', '=', 'murid.id')
+                ->leftJoin('jurnal', 'absensi.id_jurnal', '=', 'jurnal.id')
+                ->leftJoin('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+                ->get([
+                    'absensi.id',
+                    'jurnal.id as id_jurnal',
+                    'murid.id as id_murid',
+                    'kelas.id as id_kelas',
+                    'murid.nama as murid',
+                    'absensi.keterangan as status',
+                    'absensi.foto',
+                    'absensi.created_at as tanggal',
+                ]);
             return api_success('Berhasil mengambil data absensi', $absensi);
         } catch (Exception $e) {
             return api_error($e);
@@ -23,18 +36,47 @@ class AbsensiController extends Controller
     {
         try {
             $id_kelas = $request->route('id');
-            $absensi = Absensi::where('id_kelas', $id_kelas)->orderBy('id', 'DESC')->get();
+            $absensi = Absensi::orderBy('absensi.id', 'DESC')
+                ->leftJoin('murid', 'absensi.id_murid', '=', 'murid.id')
+                ->leftJoin('jurnal', 'absensi.id_jurnal', '=', 'jurnal.id')
+                ->leftJoin('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+                ->where('kelas.id', $id_kelas)
+                ->get([
+                    'absensi.id',
+                    'jurnal.id as id_jurnal',
+                    'murid.id as id_murid',
+                    'kelas.id as id_kelas',
+                    'murid.nama as murid',
+                    'absensi.keterangan as status',
+                    'absensi.foto',
+                    'absensi.created_at as tanggal',
+                ]);
+
             return api_success('Berhasil mengambil data absensi berdasarkan kelas', $absensi);
         } catch (Exception $e) {
             return api_error($e);
         }
     }
-    
+
     public function list_by_murid(Request $request)
     {
         try {
             $id_murid = $request->route('id');
-            $absensi = Absensi::where('id_murid', $id_murid)->orderBy('id', 'DESC')->get();
+            $absensi = Absensi::orderBy('id', 'DESC')
+            ->leftJoin('murid', 'absensi.id_murid', '=', 'murid.id')
+            ->leftJoin('jurnal', 'absensi.id_jurnal', '=', 'jurnal.id')
+            ->leftJoin('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+            ->where('murid.id', $id_murid)
+            ->get([
+                'absensi.id',
+                'jurnal.id as id_jurnal',
+                'murid.id as id_murid',
+                'kelas.id as id_kelas',
+                'murid.nama as murid',
+                'absensi.keterangan as status',
+                'absensi.foto',
+                'absensi.created_at as tanggal',
+            ]);
             return api_success('Berhasil mengambil data absensi berdasarkan murid', $absensi);
         } catch (Exception $e) {
             return api_error($e);
@@ -45,7 +87,24 @@ class AbsensiController extends Controller
     {
         try {
             $id_jurnal = $request->route('id');
-            $absensi = Absensi::where('id_jurnal', $id_jurnal)->orderBy('id', 'DESC')->get();
+            $absensi = Absensi::orderBy('id', 'DESC')
+            ->leftJoin('murid', 'absensi.id_murid', '=', 'murid.id')
+            ->leftJoin('jurnal', 'absensi.id_jurnal', '=', 'jurnal.id')
+            ->leftJoin('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+            ->where('jurnal.id', $id_jurnal)
+            ->get([
+                'absensi.id',
+                'jurnal.id as id_jurnal',
+                'murid.id as id_murid',
+                'kelas.id as id_kelas',
+                'murid.nama as murid',
+                'absensi.keterangan as status',
+                'absensi.foto',
+                'absensi.created_at as tanggal',
+            ]);
+            $absensi->each(function ($item) {
+                $item->foto = $item->foto ?  absensiPath($item->foto) : null;
+            });
             return api_success('Berhasil mengambil data absensi berdasarkan jurnal', $absensi);
         } catch (Exception $e) {
             return api_error($e);
@@ -67,8 +126,8 @@ class AbsensiController extends Controller
     public function create(Request $request)
     {
         try {
+            $token_data = (object) $request->tokenData;
             $rules = [
-                'id_murid' => 'required|exists:murid,id',
                 'id_jurnal' => 'required|exists:jurnal,id',
                 'id_kelas' => 'required|exists:kelas,id',
                 'keterangan' => 'required|in:H,S,I,A',
@@ -76,8 +135,6 @@ class AbsensiController extends Controller
             ];
 
             $messages = [
-                'id_murid.required' => 'Murid masih kosong',
-                'id_murid.exists' => 'Murid tidak ditemukan',
                 'id_jurnal.required' => 'Jurnal masih kosong',
                 'id_jurnal.exists' => 'Jurnal tidak ditemukan',
                 'id_kelas.required' => 'Kelas masih kosong',
@@ -94,11 +151,12 @@ class AbsensiController extends Controller
                 return api_failed($validator->errors()->first());
             }
             Absensi::create([
-                'id_murid' => $request->id_murid,
+                'id_murid' => $token_data->id,
                 'id_jurnal' => $request->id_jurnal,
                 'id_kelas' => $request->id_kelas,
                 'keterangan' => $request->keterangan,
                 'foto' => upload_file($request->file('foto'), 'absensi'),
+                'alamat' => $request->alamat,
             ]);
             return api_success('Berhasil tambah data absensi');
         } catch (Exception $e) {

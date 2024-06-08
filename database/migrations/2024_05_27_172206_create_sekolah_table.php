@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('logo')->nullable();
             $table->decimal('garis_lintang', 10, 7)->nullable();
             $table->decimal('garis_bujur', 10, 7)->nullable();
-            $table->string('penanda')->nullable();
-            $table->integer('jarak')->nullable();
+            $table->string('alamat')->nullable();
+            $table->double('jarak')->default(30);
             $table->integer('id_semester_aktif')->nullable();
             $table->timestamps();
         });

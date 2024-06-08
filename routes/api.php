@@ -10,7 +10,9 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\MuridController;
 use App\Http\Controllers\OrtuController;
+use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -26,6 +28,15 @@ Route::get('/about', [DashboardController::class, 'about']);
     - auth.ortu
 */
 Route::middleware(['auth.all'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard/murid', [DashboardController::class, 'murid']);
+    
+    Route::get('/settings/sekolah/detail', [SettingsController::class, 'detail_sekolah']);
+    Route::post('/settings/sekolah/update', [SettingsController::class, 'update_sekolah']);
+    Route::post('/settings/lokasi/update', [SettingsController::class, 'update_lokasi']);
+    
+    Route::get('/pengguna/list', [PenggunaController::class, 'list']);
+    
     Route::get('/admin/list', [AdminController::class, 'list']);
     Route::get('/admin/get/{id}', [AdminController::class, 'get']);
     Route::post('/admin/create', [AdminController::class, 'create']);

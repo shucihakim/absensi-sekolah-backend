@@ -17,7 +17,6 @@ return new class extends Migration
             $table->integer('id_kelas');
             $table->integer('id_mapel');
             $table->integer('id_guru');
-            $table->enum('keterangan', ['S', 'I', 'A']);
             $table->time('jam_masuk');
             $table->time('jam_keluar');
             $table->string('materi');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class KelasController extends Controller
@@ -12,7 +13,18 @@ class KelasController extends Controller
     public function list()
     {
         try {
-            $kelas = Kelas::orderBy('id', 'DESC')->get();
+            $kelas = Kelas::leftJoin('guru', 'kelas.id_wali', '=', 'guru.id')
+                ->leftJoin('murid', 'kelas.id', '=', 'murid.id_kelas')
+                ->groupBy('kelas.id')
+                ->orderBy('kelas.id', 'DESC')
+                ->get([
+                    'kelas.id',
+                    'kelas.nama as name',
+                    'guru.nama as waliKelas',
+                    'kelas.active as status',
+                    'guru.gambar as image',
+                    DB::raw('COUNT(murid.id) as totalMurid'),
+                ]);
             return api_success('Berhasil mengambil data kelas', $kelas);
         } catch (Exception $e) {
             return api_error($e);

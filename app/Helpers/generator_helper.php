@@ -4,6 +4,15 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Carbon\Carbon;
+
+function getCurrentTime($format = null): Carbon
+{
+    $dateTime = new DateTime('now'); // Adjust 'Asia/Jakarta' if needed
+    $formated = $dateTime->format('Y-m-d\TH:i:s.u\Z');
+    $time = Carbon::parse($formated);
+    return $format ? $time->format($format) : $time;
+}
 
 function generateJWT($payload): string
 {
@@ -30,6 +39,22 @@ function uploadPath(string $filename, string $folder = ''): string
 {
     $baseurl = URL::to('/');
     $url = "$baseurl/uploads/$folder/$filename";
+    return $url;
+}
+
+function profilePath(string $filename): string
+{
+    $baseurl = URL::to('/');
+    $path = "profiles";
+    $url = "$baseurl/$path/$filename";
+    return $url;
+}
+
+function absensiPath(string $filename): string
+{
+    $baseurl = URL::to('/');
+    $path = "uploads/absensi";
+    $url = "$baseurl/$path/$filename";
     return $url;
 }
 
