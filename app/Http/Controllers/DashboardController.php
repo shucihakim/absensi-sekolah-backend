@@ -60,7 +60,7 @@ class DashboardController extends Controller
                 DB::raw("DATE_FORMAT(waktu, '%H:%i:%s') as jam")
             ]);
         if ($absensi) {
-            $absensi->foto = absensiPath($absensi->foto);
+            $absensi->foto =  $absensi->foto ? absensiPath($absensi->foto) : null;
         }
         $data = [
             'kelas' => [

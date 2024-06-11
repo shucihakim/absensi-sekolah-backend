@@ -20,6 +20,8 @@ class MapelController extends Controller
                 'mapel.id',
                 'mapel.nama as name',
                 'mapel.active as status',
+                'mapel.jam_masuk',
+                'mapel.jam_keluar',
                 DB::raw('COUNT(jurnal.id) as totalJurnal'),
             ]);
             return api_success('Berhasil mengambil data mapel', $mapel);

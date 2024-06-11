@@ -3,6 +3,8 @@
 /public/build
 /public/hot
 /public/storage
+/public/uploads
+/public/profiles
 /storage/*.key
 /vendor
 .env
@@ -17,4 +19,4 @@ npm-debug.log
 yarn-error.log
 /.fleet
 /.idea
-/.vscode
+/.vscod

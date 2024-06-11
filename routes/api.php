@@ -36,6 +36,10 @@ Route::middleware(['auth.all'])->group(function () {
     Route::post('/settings/lokasi/update', [SettingsController::class, 'update_lokasi']);
     
     Route::get('/pengguna/list', [PenggunaController::class, 'list']);
+    Route::post('/pengguna/create', [PenggunaController::class, 'create']);
+    Route::post('/pengguna/update', [PenggunaController::class, 'update']);
+    Route::post('/pengguna/picture/upload', [PenggunaController::class, 'upload_picture']);
+    Route::post('/pengguna/picture/delete', [PenggunaController::class, 'delete_picture']);
     
     Route::get('/admin/list', [AdminController::class, 'list']);
     Route::get('/admin/get/{id}', [AdminController::class, 'get']);
@@ -53,6 +57,7 @@ Route::middleware(['auth.all'])->group(function () {
     
     Route::get('/murid/list', [MuridController::class, 'list']);
     Route::get('/murid/get/{id}', [MuridController::class, 'get']);
+    Route::get('/murid/kelas/{id}', [MuridController::class, 'getByKelas']);
     Route::post('/murid/create', [MuridController::class, 'create']);
     Route::post('/murid/update/{id}', [MuridController::class, 'update']);
     Route::post('/murid/inactive/{id}', [MuridController::class, 'inactive']);
@@ -74,6 +79,8 @@ Route::middleware(['auth.all'])->group(function () {
 
     Route::get('/kelas/list', [KelasController::class, 'list']);
     Route::get('/kelas/get/{id}', [KelasController::class, 'get']);
+    Route::post('/kelas/murid/add', [KelasController::class, 'addMurid']);
+    Route::post('/kelas/murid/delete', [KelasController::class, 'removeMurid']);
     Route::post('/kelas/create', [KelasController::class, 'create']);
     Route::post('/kelas/update/{id}', [KelasController::class, 'update']);
     Route::post('/kelas/inactive/{id}', [KelasController::class, 'inactive']);
@@ -89,6 +96,7 @@ Route::middleware(['auth.all'])->group(function () {
     Route::get('/jurnal/list', [JurnalController::class, 'list']);
     Route::get('/jurnal/list/guru/{id}', [JurnalController::class, 'list_by_guru']);
     Route::get('/jurnal/get/{id}', [JurnalController::class, 'get']);
+    Route::get('/jurnal/report', [JurnalController::class, 'downloadReport']);
     Route::post('/jurnal/create', [JurnalController::class, 'create']);
     Route::post('/jurnal/update/{id}', [JurnalController::class, 'update']);
     Route::post('/jurnal/inactive/{id}', [JurnalController::class, 'inactive']);
@@ -100,8 +108,8 @@ Route::middleware(['auth.all'])->group(function () {
     Route::get('/absensi/list/jurnal/{id}', [AbsensiController::class, 'list_by_jurnal']);
     Route::get('/absensi/get/{id}', [AbsensiController::class, 'get']);
     Route::post('/absensi/create', [AbsensiController::class, 'create']);
-    Route::post('/absensi/update/{id}', [AbsensiController::class, 'update']);
-    Route::post('/absensi/update/kelas/{id}', [AbsensiController::class, 'update_by_kelas']);
+    Route::post('/absensi/update', [AbsensiController::class, 'update']);
+    Route::post('/absensi/update/kelas', [AbsensiController::class, 'update_by_kelas']);
     Route::post('/absensi/inactive/{id}', [AbsensiController::class, 'inactive']);
     Route::post('/absensi/delete/{id}', [AbsensiController::class, 'delete']);
 });

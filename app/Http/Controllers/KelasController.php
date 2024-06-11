@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kelas;
+use App\Models\Murid;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -25,6 +26,9 @@ class KelasController extends Controller
                     'guru.gambar as image',
                     DB::raw('COUNT(murid.id) as totalMurid'),
                 ]);
+            $kelas->each(function ($item) {
+                $item->image = $item->image ?  profilePath($item->image) : textAvatar($item->waliKelas ?? $item->name);
+            });
             return api_success('Berhasil mengambil data kelas', $kelas);
         } catch (Exception $e) {
             return api_error($e);
@@ -70,6 +74,55 @@ class KelasController extends Controller
                 'deskripsi' => $request->deskripsi,
             ]);
             return api_success('Berhasil tambah data kelas');
+        } catch (Exception $e) {
+            return api_error($e);
+        }
+    }
+
+    public function addMurid(Request $request)
+    {
+        try {
+            $rules = [
+                'id_kelas' => 'required|exists:kelas,id',
+                'id_murid' => 'required|exists:murid,id',
+            ];
+            $messages = [
+                'id_kelas.required' => 'Kelas masih kosong',
+                'id_kelas.exists' => 'Kelas tidak ditemukan',
+                'id_murid.required' => 'Murid masih kosong',
+                'id_murid.exists' => 'Murid tidak ditemukan',
+            ];
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return api_failed($validator->errors()->first());
+            }
+            $kelas = Kelas::find($request->id_kelas);
+            if (!$kelas) return api_failed('Data kelas tidak ditemukan');
+            Murid::find($request->id_murid)->update(['id_kelas' => $request->id_kelas]);
+            return api_success('Berhasil tambah murid ke kelas');
+        } catch (Exception $e) {
+            return api_error($e);
+        }
+    }
+
+    public function removeMurid(Request $request) {
+        try {
+            $rules = [
+                'id_kelas' => 'required|exists:kelas,id',
+                'id_murid' => 'required|exists:murid,id',
+            ];
+            $messages = [
+                'id_kelas.required' => 'Kelas masih kosong',
+                'id_kelas.exists' => 'Kelas tidak ditemukan',
+                'id_murid.required' => 'Murid masih kosong',
+                'id_murid.exists' => 'Murid tidak ditemukan',
+            ];
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return api_failed($validator->errors()->first());
+            }
+            Murid::find($request->id_murid)->update(['id_kelas' => null]);
+            return api_success('Berhasil hapus murid dari kelas');
         } catch (Exception $e) {
             return api_error($e);
         }

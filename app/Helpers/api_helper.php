@@ -27,7 +27,7 @@ function api_error(Exception $e, ?int $status = 500)
     Log::error($e);
     $response = [
         'success' => false,
-        'error' => $e->getMessage(),
+        'message' => $e->getMessage(),
         'trace' => $e->getTraceAsString(),
     ];
     return response()->json($response, $status);

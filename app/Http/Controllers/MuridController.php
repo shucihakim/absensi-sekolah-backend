@@ -31,6 +31,21 @@ class MuridController extends Controller
             return api_error($e);
         }
     }
+    
+    public function getByKelas(Request $request)
+    {
+        try {
+            $id = $request->route('id');
+            $murid = Murid::where('id_kelas', $id)->get();
+            $murid->each(function ($item) {
+                $item->gambar = $item->gambar ?  profilePath($item->gambar) : textAvatar($item->nama);
+            });
+            if (!$murid) return api_failed('Data murid tidak ditemukan');
+            return api_success('Berhasil mengambil data murid berdasarkan kelas', $murid);
+        } catch (Exception $e) {
+            return api_error($e);
+        }
+    }
 
     public function create(Request $request)
     {

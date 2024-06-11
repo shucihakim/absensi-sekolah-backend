@@ -194,6 +194,7 @@ class AuthController extends Controller
             if (empty($attempt)) {
                 return api_failed('Kata sandi yang anda masukan salah!');
             } else {
+                $user->gambar = $user->gambar ? profilePath($user->gambar) : textAvatar($user->nama);
                 $payload = $user->toArray();
                 $payload['type'] = $type;
                 $token = generateJWT($payload);
