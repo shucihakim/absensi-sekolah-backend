@@ -21,6 +21,8 @@ class JurnalController extends Controller
                 ->leftJoin('guru', 'jurnal.id_guru', '=', 'guru.id')
                 ->get([
                     'jurnal.id',
+                    'mapel.id as id_mapel',
+                    'kelas.id as id_kelas',
                     'semester.nama as semester',
                     'mapel.nama as mapel',
                     'guru.nama as guru',
