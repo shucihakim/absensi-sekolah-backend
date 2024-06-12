@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('tentang', function (Blueprint $table) {
             $table->id();
+            $table->integer('no')->default(0);
             $table->string('type');
             $table->text('teks');
             $table->string('lampiran')->nullable();

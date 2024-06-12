@@ -84,7 +84,29 @@ class JurnalController extends Controller
     {
         try {
             $id = $request->route('id');
-            $jurnal = Jurnal::find($id);
+            $jurnal = Jurnal::leftJoin('semester', 'jurnal.id_semester', '=', 'semester.id')
+                ->leftJoin('kelas', 'jurnal.id_kelas', '=', 'kelas.id')
+                ->leftJoin('mapel', 'jurnal.id_mapel', '=', 'mapel.id')
+                ->leftJoin('guru', 'jurnal.id_guru', '=', 'guru.id')
+                ->where('jurnal.id', $id)
+                ->first([
+                    'jurnal.id',
+                    'semester.id as id_semester',
+                    'mapel.id as id_mapel',
+                    'kelas.id as id_kelas',
+                    'guru.id as id_guru',
+                    'semester.nama as semester',
+                    'mapel.nama as mapel',
+                    'guru.nama as guru',
+                    'guru.gambar as image',
+                    'kelas.nama as kelas',
+                    'jurnal.jam_masuk',
+                    'jurnal.jam_keluar',
+                    'jurnal.materi',
+                    DB::raw("DATE_FORMAT(jurnal.created_at, '%d-%m-%Y') as tanggal"),
+                    DB::raw("CONCAT(DATE_FORMAT(jurnal.jam_masuk, '%H:%i'), ' ', DATE_FORMAT(jurnal.created_at, '%d-%m-%Y')) as waktu_jurnal"),
+                    DB::raw("CONCAT(DATE_FORMAT(jurnal.jam_masuk, '%H:%i'), ' ', DATE_FORMAT(jurnal.jam_keluar, '%H:%i'), ' (', DATE_FORMAT(jurnal.created_at, '%d-%b'), ')') as waktu_absen"),
+                ]);
             if (!$jurnal) return api_failed('Data jurnal tidak ditemukan');
             return api_success('Berhasil mengambil data jurnal', $jurnal);
         } catch (Exception $e) {

@@ -80,7 +80,10 @@ class DashboardController extends Controller
     public function about()
     {
         try {
-            $about = Tentang::first();
+            $about = Tentang::orderBy('no', 'ASC')->get();
+            $about->each(function ($item) {
+                $item->lampiran = $item->lampiran ? aboutPath($item->lampiran) : null;
+            });
             return api_success('Berhasil mengambil data tentang sekolah', $about);
         } catch (Exception $e) {
             return api_error($e);

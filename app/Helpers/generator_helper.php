@@ -58,6 +58,14 @@ function absensiPath(string $filename): string
     return $url;
 }
 
+function aboutPath(string $filename): string
+{
+    $baseurl = URL::to('/');
+    $path = "tentang";
+    $url = "$baseurl/$path/$filename";
+    return $url;
+}
+
 function textAvatar(string $text): string
 {
     $color = "343a55";
