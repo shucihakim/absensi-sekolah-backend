@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    public function dashboard_web()
+    {
+        $version = json_decode(file_get_contents(public_path('app/version.json')), true);
+        return view('dashboard', $version);
+    }
+
     public function index()
     {
         try {

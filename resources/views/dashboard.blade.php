@@ -33,7 +33,7 @@
                         dan akurat. Fitur unggulannya meliputi absensi otomatis, laporan real-time, serta integrasi dengan sistem sekolah. Tingkatkan efisiensi dan komunikasi dalam
                         manajemen kelas dengan aplikasi absensi sekarang!
                     </p>
-                    <button>Unduh Aplikasi</button>
+                    <button id="download">Unduh Aplikasi</button>
                 </div>
 
                 <div class="image">
@@ -43,6 +43,11 @@
         </div>
     </div>
     <!-- End Landing Page -->
+    <script>
+        document.getElementById('download').addEventListener('click', function() {
+            window.location.href = "{{ $link_android }}";
+        });
+    </script>
 </body>
 
 </html>
