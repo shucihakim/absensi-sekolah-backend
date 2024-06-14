@@ -107,4 +107,13 @@ class SettingsController extends Controller
             return api_error($e);
         }
     }
+
+    public function get_version() {
+        try {
+            $version = json_decode(file_get_contents(public_path('app/version.json')), true);
+            return api_success('Berhasil mengambil versi aplikasi', $version);
+        } catch (Exception $e) {
+            return api_error($e);
+        }
+    }
 }

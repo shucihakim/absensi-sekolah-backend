@@ -27,6 +27,11 @@ Route::get('/about', [DashboardController::class, 'about']);
     - auth.murid
     - auth.ortu
 */
+
+Route::middleware(['guest'])->group(function () {
+    Route::get('/settings/version', [SettingsController::class, 'get_version']);
+});
+
 Route::middleware(['auth.all'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/dashboard/murid', [DashboardController::class, 'murid']);

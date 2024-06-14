@@ -28,6 +28,12 @@ function generateJWT($payload): string
     return $jwt;
 }
 
+function decodeJWT($jwt): object
+{
+    $key = \config('api.jwt_secret_key');
+    return JWT::decode($jwt, new Key($key, 'HS256'));
+}
+
 function getTokenData(Request $request): object
 {
     $key = \config('api.jwt_secret_key');

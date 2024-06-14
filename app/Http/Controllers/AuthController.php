@@ -8,10 +8,14 @@ use App\Models\Murid;
 use App\Models\Ortu;
 
 use Exception;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\SignatureInvalidException;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -59,6 +63,25 @@ class AuthController extends Controller
                 return api_failed($validator->errors()->first());
             }
 
+            $token = generateJWT([
+                'name' => $request->nama,
+                'email' => $request->email,
+                'type' => $request->type,
+            ]);
+            $mailable = new Mailable();
+            $mailable
+                ->from(env('MAIL_FROM_ADDRESS', 'verify@sman12-luwu.my.id'))
+                ->to($request->email)
+                ->subject('Verifikasi Register')
+                ->html('
+                <h1>Verifikasi Register</h1>
+                <p>Halo <b>' . $request->nama . '</b>! Silahkan klik link berikut untuk verifikasi akun anda</p>
+                <a href="' . route('auth.verify', ['token' => $token]) . '">Verifikasi</a>
+            ');
+            $result = Mail::send($mailable);
+
+            if (!$result) return api_failed('Gagal mengirim email verifikasi', ['email' => $request->email]);
+
             switch ($request->type) {
                 case 'admin':
                     $user = Admin::create([
@@ -104,7 +127,7 @@ class AuthController extends Controller
                     break;
             }
 
-            return api_success('Berhasil register, silahkan login untuk masuk ke aplikasi.', $user);
+            return api_success('Berhasil register, silahkan cek email untuk verifikasi, dan juga cek folder spam jika tidak masuk di inbox', $user);
         } catch (Exception $e) {
             return api_error($e);
         }
@@ -144,6 +167,7 @@ class AuthController extends Controller
                 ->orWhere('no_hp', $account)
                 ->first();
             if ($guru) {
+                if ($guru->verified == 0) return api_failed('Akun anda belum diverifikasi');
                 $user = $guru;
                 $type = 'guru';
             }
@@ -153,6 +177,7 @@ class AuthController extends Controller
                 ->orWhere('no_hp', $account)
                 ->first();
             if ($murid) {
+                if ($murid->verified == 0) return api_failed('Akun anda belum diverifikasi');
                 $user = $murid;
                 $type = 'murid';
             }
@@ -161,6 +186,7 @@ class AuthController extends Controller
                 ->orWhere('no_hp', $account)
                 ->first();
             if ($ortu) {
+                if ($ortu->verified == 0) return api_failed('Akun anda belum diverifikasi');
                 $user = $ortu;
                 $type = 'ortu';
             }
@@ -204,6 +230,51 @@ class AuthController extends Controller
                     'token_type' => 'Bearer'
                 ]);
             }
+        } catch (Exception $e) {
+            return api_error($e);
+        }
+    }
+
+    public function verify(Request $request)
+    {
+        try {
+            $token = $request->query('token');
+            if (!$token) return view('verification', ['success' => false, 'message' => 'Token verifikasi tidak ada']);
+            $tokenData = decodeJWT($token);
+
+            switch ($tokenData->type) {
+                case 'admin':
+                    $user = Admin::where('email', $tokenData->email)->first();
+                    break;
+
+                case 'guru':
+                    $user = Guru::where('email', $tokenData->email)->first();
+                    break;
+
+                case 'murid':
+                    $user = Murid::where('email', $tokenData->email)->first();
+                    break;
+
+                case 'ortu':
+                    $user = Ortu::where('email', $tokenData->email)->first();
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+
+            if (isset($user)) {
+                $user->update(['verified' => 1]);
+            } else {
+                return view('verification', ['success' => false, 'message' => 'User tidak ditemukan']);
+            }
+
+            return view('verification', ['success' => true, 'message' => 'Silahkan masuk ke aplikasi anda.']);
+        } catch (SignatureInvalidException $e) {
+            return view('verification', ['success' => false, 'message' => 'Token verifikasi tidak valid']);
+        } catch (ExpiredException $e) {
+            return view('verification', ['success' => false, 'message' => 'Token verifikasi sudah tidak berlaku']);
         } catch (Exception $e) {
             return api_error($e);
         }

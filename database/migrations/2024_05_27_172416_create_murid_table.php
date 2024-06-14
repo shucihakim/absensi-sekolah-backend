@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('no_hp');
             $table->string('password');
             $table->string('gambar')->nullable();
+            $table->boolean('verified')->default(false);
             $table->boolean('active')->default(true);
             $table->timestamps();
         });
