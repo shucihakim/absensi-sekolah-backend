@@ -33,7 +33,8 @@
                         dan akurat. Fitur unggulannya meliputi absensi otomatis, laporan real-time, serta integrasi dengan sistem sekolah. Tingkatkan efisiensi dan komunikasi dalam
                         manajemen kelas dengan aplikasi absensi sekarang!
                     </p>
-                    <button id="download">Unduh Aplikasi</button>
+                    <button id="download">Unduh APK v1.0.6</button>
+                    <button id="web">Buka Aplikasi Web</button>
                 </div>
 
                 <div class="image">
@@ -46,6 +47,9 @@
     <script>
         document.getElementById('download').addEventListener('click', function() {
             window.location.href = "{{ $link_android }}";
+        });
+        document.getElementById('web').addEventListener('click', function() {
+            window.location.href = "https://web.sman12-luwu.my.id";
         });
     </script>
 </body>

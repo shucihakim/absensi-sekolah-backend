@@ -159,7 +159,7 @@ ul {
     color: #5d5d5d;
 }
 
-.landing-page .content .info button {
+.landing-page .content .info button#download {
     border: 0;
     border-radius: 20px;
     padding: 12px 30px;
@@ -167,6 +167,17 @@ ul {
     cursor: pointer;
     color: #FFF;
     background-color: #6c63ff;
+}
+
+.landing-page .content .info button#web {
+    border: 0;
+    border-radius: 20px;
+    padding: 12px 30px;
+    margin-top: 30px;
+    cursor: pointer;
+    color: #6c63ff;
+    border: 1px solid #6c63ff;
+    /* background-color: #6c63ff; */
 }
 
 .landing-page .content .image img {
