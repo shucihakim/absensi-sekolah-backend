@@ -1,5 +1,5 @@
 {
     "version": "1.0.6",
-    "link_android": "/app/aplikasi-absensi.1.0.6.apk",
-    "link_ios": "/app/aplikasi-absensi.1.0.6.dmg"
+    "link_android": "./app/aplikasi-absensi.1.0.6.apk",
+    "link_ios": "./app/aplikasi-absensi.1.0.6.dmg"
 }
