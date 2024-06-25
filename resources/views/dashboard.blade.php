@@ -49,7 +49,7 @@
             window.location.href = "{{ $link_android }}";
         });
         document.getElementById('web').addEventListener('click', function() {
-            window.location.href = "https://web.sman12-luwu.my.id";
+            window.location.href = "http://web.sman12-luwu.my.id";
         });
     </script>
 </body>
