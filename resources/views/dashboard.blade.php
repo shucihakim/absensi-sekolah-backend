@@ -46,7 +46,7 @@
     <!-- End Landing Page -->
     <script>
         document.getElementById('download').addEventListener('click', function() {
-            window.location.href = "{{ $link_android }}";
+            window.location.href = ".{{ $link_android }}";
         });
         document.getElementById('web').addEventListener('click', function() {
             window.location.href = "http://web.sman12-luwu.my.id";
