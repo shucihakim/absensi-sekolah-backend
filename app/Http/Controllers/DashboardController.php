@@ -63,12 +63,16 @@ class DashboardController extends Controller
                 'keterangan',
                 'foto',
                 'alamat',
-                DB::raw("DATE_FORMAT(waktu, '%H:%i:%s') as jam")
+                DB::raw("DATE_FORMAT(created_at, '%H:%i:%s') as jam")
             ]);
         if ($absensi) {
             $absensi->foto =  $absensi->foto ? absensiPath($absensi->foto) : null;
         }
         $data = [
+            'waktu' => [
+                'time' => getCurrentTime()->format('H:i:s'),
+                'date' => getCurrentTime()->format('Y-m-d'),
+            ],
             'kelas' => [
                 'id' => $kelas ? $kelas->id : 0,
                 'nama' => $nama_kelas

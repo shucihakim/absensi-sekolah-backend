@@ -35,6 +35,20 @@ class KelasController extends Controller
         }
     }
 
+    public function total(Request $request)
+    {
+        try {
+            $id = $request->route('id');
+            $total = Murid::where('id_kelas', $id)->count();
+            $data = [
+                'total' => $total,
+            ];
+            return api_success('Berhasil mengambil total kelas', $data);
+        } catch (Exception $e) {
+            return api_error($e);
+        }
+    }
+
     public function get(Request $request)
     {
         try {
@@ -105,7 +119,8 @@ class KelasController extends Controller
         }
     }
 
-    public function removeMurid(Request $request) {
+    public function removeMurid(Request $request)
+    {
         try {
             $rules = [
                 'id_kelas' => 'required|exists:kelas,id',

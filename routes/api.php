@@ -83,6 +83,7 @@ Route::middleware(['auth.all'])->group(function () {
     Route::post('/semester/delete/{id}', [SemesterController::class, 'delete']);
 
     Route::get('/kelas/list', [KelasController::class, 'list']);
+    Route::get('/kelas/total/{id}', [KelasController::class, 'total']);
     Route::get('/kelas/get/{id}', [KelasController::class, 'get']);
     Route::post('/kelas/murid/add', [KelasController::class, 'addMurid']);
     Route::post('/kelas/murid/delete', [KelasController::class, 'removeMurid']);
