@@ -33,7 +33,7 @@
                         dan akurat. Fitur unggulannya meliputi absensi otomatis, laporan real-time, serta integrasi dengan sistem sekolah. Tingkatkan efisiensi dan komunikasi dalam
                         manajemen kelas dengan aplikasi absensi sekarang!
                     </p>
-                    <button id="download">Unduh APK v1.0.6</button>
+                    <button id="download">Unduh APK v1.0.8</button>
                     <button id="web">Buka Aplikasi Web</button>
                 </div>
 

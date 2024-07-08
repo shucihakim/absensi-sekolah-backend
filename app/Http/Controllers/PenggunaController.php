@@ -112,6 +112,7 @@ class PenggunaController extends Controller
                         'nama' => $request->nama,
                         'email' => $request->email,
                         'no_hp' => $request->no_hp,
+                        'verified' => 1,
                         'password' => Hash::make($request->password),
                     ]);
                     break;
@@ -122,6 +123,7 @@ class PenggunaController extends Controller
                         'nama' => $request->nama,
                         'email' => $request->email,
                         'no_hp' => $request->no_hp,
+                        'verified' => 1,
                         'password' => Hash::make($request->password),
                     ]);
                     break;
@@ -131,6 +133,7 @@ class PenggunaController extends Controller
                         'nama' => $request->nama,
                         'email' => $request->email,
                         'no_hp' => $request->no_hp,
+                        'verified' => 1,
                         'password' => Hash::make($request->password),
                     ]);
                     break;
