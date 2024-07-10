@@ -46,7 +46,7 @@
     <!-- End Landing Page -->
     <script>
         document.getElementById('download').addEventListener('click', function() {
-            window.location.href = ".{{ $link_android }}";
+            window.location.href = "./app/aplikasi-absensi.1.1.1.apk";
         });
         document.getElementById('web').addEventListener('click', function() {
             window.location.href = "https://web.sman12-luwu.my.id";
