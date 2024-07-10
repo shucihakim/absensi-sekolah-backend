@@ -152,6 +152,14 @@ class AbsensiController extends Controller
             if ($validator->fails()) {
                 return api_failed($validator->errors()->first());
             }
+            $existingAbsensi = Absensi::where('id_murid', $token_data->id)
+                ->where('id_jurnal', $request->id_jurnal)
+                ->where('id_kelas', $request->id_kelas)
+                ->first();
+
+            if ($existingAbsensi) {
+                return api_failed('Absensi sudah ada');
+            }
             Absensi::create([
                 'id_murid' => $token_data->id,
                 'id_jurnal' => $request->id_jurnal,
