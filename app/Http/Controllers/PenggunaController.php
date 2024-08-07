@@ -77,13 +77,17 @@ class PenggunaController extends Controller
             ];
 
             if ($request->role == 'admin') {
-                $rules['nip'] = 'required|max:255|unique:admin|unique:guru';
+                $rules['nip'] = 'required|min:16|max:16|unique:admin|unique:guru';
                 $messages['nip.required'] = 'NIP masih kosong';
                 $messages['nip.unique'] = 'NIP sudah terdaftar';
+                $messages['nip.min'] = 'NIP harus 16 karakter';
+                $messages['nip.max'] = 'NIP tidak boleh melebihi 16 karakter';
             } else if ($request->role == 'guru') {
-                $rules['nip'] = 'required|max:255|unique:admin|unique:guru';
+                $rules['nip'] = 'required|min:16|max:16|unique:admin|unique:guru';
                 $messages['nip.required'] = 'NIP masih kosong';
                 $messages['nip.unique'] = 'NIP sudah terdaftar';
+                $messages['nip.min'] = 'NIP harus 16 karakter';
+                $messages['nip.max'] = 'NIP tidak boleh melebihi 16 karakter';
             } else if ($request->role == 'murid') {
                 $rules['nis'] = 'required|max:255|unique:murid';
                 $messages['nis.required'] = 'NIS masih kosong';
@@ -149,7 +153,8 @@ class PenggunaController extends Controller
         }
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         try {
             $token_data = (object) $request->tokenData;
             $id = $token_data->id;
@@ -275,7 +280,8 @@ class PenggunaController extends Controller
         }
     }
 
-    public function delete_picture(Request $request) {
+    public function delete_picture(Request $request)
+    {
         try {
             $token_data = (object) $request->tokenData;
             if ($token_data->type == 'admin') {

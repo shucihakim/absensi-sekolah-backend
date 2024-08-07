@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\Mailer\Exception\UnexpectedResponseException;
 
 class AuthController extends Controller
 {
@@ -45,13 +46,17 @@ class AuthController extends Controller
             ];
 
             if ($request->type == 'admin') {
-                $rules['nip'] = 'required|max:255|unique:admin|unique:guru';
+                $rules['nip'] = 'required|min:16|max:16|unique:admin|unique:guru';
                 $messages['nip.required'] = 'NIP masih kosong';
                 $messages['nip.unique'] = 'NIP sudah terdaftar';
+                $messages['nip.min'] = 'NIP harus 16 karakter';
+                $messages['nip.max'] = 'NIP tidak boleh melebihi 16 karakter';
             } else if ($request->type == 'guru') {
-                $rules['nip'] = 'required|max:255|unique:admin|unique:guru';
+                $rules['nip'] = 'required|min:16|max:16|unique:admin|unique:guru';
                 $messages['nip.required'] = 'NIP masih kosong';
                 $messages['nip.unique'] = 'NIP sudah terdaftar';
+                $messages['nip.min'] = 'NIP harus 16 karakter';
+                $messages['nip.max'] = 'NIP tidak boleh melebihi 16 karakter';
             } else if ($request->type == 'murid') {
                 $rules['nis'] = 'required|max:255|unique:murid';
                 $messages['nis.required'] = 'NIS masih kosong';
@@ -128,6 +133,8 @@ class AuthController extends Controller
             }
 
             return api_success('Berhasil register, silahkan cek email untuk verifikasi, dan juga cek folder spam jika tidak masuk di inbox', $user);
+        } catch (UnexpectedResponseException $e) {
+            return api_failed("Gagal mengirim email verifikasi ke $request->email, pastikan email sudah benar.");
         } catch (Exception $e) {
             return api_error($e);
         }
