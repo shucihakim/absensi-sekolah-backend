@@ -46,17 +46,17 @@ class AuthController extends Controller
             ];
 
             if ($request->type == 'admin') {
-                $rules['nip'] = 'required|min:16|max:16|unique:admin|unique:guru';
+                $rules['nip'] = 'required|min:18|max:18|unique:admin|unique:guru';
                 $messages['nip.required'] = 'NIP masih kosong';
                 $messages['nip.unique'] = 'NIP sudah terdaftar';
-                $messages['nip.min'] = 'NIP harus 16 karakter';
-                $messages['nip.max'] = 'NIP tidak boleh melebihi 16 karakter';
+                $messages['nip.min'] = 'NIP harus 18 karakter';
+                $messages['nip.max'] = 'NIP tidak boleh melebihi 18 karakter';
             } else if ($request->type == 'guru') {
-                $rules['nip'] = 'required|min:16|max:16|unique:admin|unique:guru';
+                $rules['nip'] = 'required|min:18|max:18|unique:admin|unique:guru';
                 $messages['nip.required'] = 'NIP masih kosong';
                 $messages['nip.unique'] = 'NIP sudah terdaftar';
-                $messages['nip.min'] = 'NIP harus 16 karakter';
-                $messages['nip.max'] = 'NIP tidak boleh melebihi 16 karakter';
+                $messages['nip.min'] = 'NIP harus 18 karakter';
+                $messages['nip.max'] = 'NIP tidak boleh melebihi 18 karakter';
             } else if ($request->type == 'murid') {
                 $rules['nis'] = 'required|max:255|unique:murid';
                 $messages['nis.required'] = 'NIS masih kosong';
